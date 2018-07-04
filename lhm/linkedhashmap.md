@@ -412,6 +412,102 @@ void createEntry(int hash, K key, V value, int bucketIndex) {
 
 ![Alt text](./img/prog4.png)
 
-## 0x03 总结
+## 0x03 LinkedHashMap应用之LRU Cache
+
+由于LinkedHashMap内部元素的有序性，非常适合用来实现LRU（Least Recently Used，最近最少使用） Cache。
+
+> LRU淘汰算法的核心思想：如果数据最近被访问过，那么将来被访问的几率也更高。
+
+要实现LRU缓存，需要满足：
+
+1. 新来的数据添加到缓存链表的头部
+2. 缓存中的数据被访问（即缓存命中），则将数据移到链表的头部
+3. 当缓存空间已满，需要将链表尾部的数据淘汰
+
+如此看来，只需要将LinkedHashMap中的`accessOrder`值设为`true`就能满足链表中的数据按访问顺序排序，也即满足了1、2两点。至于第3点要求，则可以通过重新LinkedHashMap中的`removeEldestEntry`方法来实现清除最旧数据的策略。
+
+LinkedHashMap中该方法默认返回false，表示不清理最旧的数据。
+
+```java
+protected boolean removeEldestEntry(Map.Entry<K,V> eldest) {
+  	return false;
+}
+```
+
+实现代码如下：
+
+```java
+package com.democode4j.loj.learning;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class LRUCache<K, V> {
+
+    private LRULinkedHashMap<K, V> cache;
+
+    class LRULinkedHashMap<K, V> extends LinkedHashMap<K, V> {
+
+        private final int capacity;
+
+        public LRULinkedHashMap(int capacity) {
+            //accessOrder设为true，元素按访问顺序排序
+            super(capacity, 0.75f, true);
+            this.capacity = capacity;
+        }
+
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+            //如果缓存空间已满，则清理最老的数据
+            if (size() > capacity)
+                return true;
+            return false;
+        }
+    }
+
+    public LRUCache(int capacity) {
+        cache = new LRULinkedHashMap(capacity);
+    }
+
+    public V get(K key) {
+        V result = cache.get(key);
+        if (null == result)
+            return null;
+        return result;
+    }
+
+    public void put(K key, V value) {
+        cache.put(key, value);
+    }
+
+    @Override
+    public String toString() {
+        return "LRUCache" + cache;
+    }
+
+    public static void main(String[] args) {
+        LRUCache<String, Integer> lruCache = new LRUCache(3);
+        lruCache.put("a", 1);
+        lruCache.put("b", 2);
+        lruCache.put("c", 3);
+        System.out.println(lruCache);
+        lruCache.get("a");
+        System.out.println(lruCache);
+        lruCache.put("b", 4);
+        System.out.println(lruCache);
+        lruCache.put("d", 5);
+        System.out.println(lruCache);
+        //结果打印
+        //LRUCache{a=1, b=2, c=3}
+        //LRUCache{b=2, c=3, a=1}
+        //LRUCache{c=3, a=1, b=4}
+        //LRUCache{a=1, b=4, d=5}
+    }
+}
+```
+
+
+
+## 0x04 总结
 
 通过以上的源码分析，我们可以看出LinkedHashMap只是对HashMap进行了扩展，由双链表的插入操作时间复杂度O(1)可知，LinkedHashMap在时间开销上并不会比HashMap多太多。因此当需要一个内部元素有序的Map时，不妨选择使用LinkedHashMap，但是需要注意，同HashMap一样，LinkedHashMap并不支持并发。
