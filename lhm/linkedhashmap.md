@@ -19,7 +19,7 @@ public void testHashMap() {
     map.put("d", 4);
     System.out.println(map.toString());
     //结果打印:
-  	//{d=4, b=2, c=3, a=1}
+    //{d=4, b=2, c=3, a=1}
 }
 ```
 
@@ -131,8 +131,8 @@ public void testLinkedHashMapWithInsertionOrder() {
     System.out.println(lm);
   	//测试结果打印：
   	//{a=1, b=2, c=3, d=4}
-	//{a=1, b=2, c=3, d=4}
-	//{a=1, b=5, c=3, d=4}
+  	//{a=1, b=2, c=3, d=4}
+  	//{a=1, b=5, c=3, d=4}
 }
 /**
  * 测试LinkedHashMap内部元素按访问顺序排序
@@ -149,10 +149,10 @@ public void testLinkedHashMapWithAccessOrder() {
     System.out.println(lm);
     lm.put("b", 5);
     System.out.println(lm);
-  	//测试结果打印：
-  	//{a=1, b=2, c=3, d=4}
-	//{b=2, c=3, d=4, a=1}
-	//{c=3, d=4, a=1, b=5}
+    //测试结果打印：
+    //{a=1, b=2, c=3, d=4}
+    //{b=2, c=3, d=4, a=1}
+    //{c=3, d=4, a=1, b=5}
 }
 ```
 
@@ -220,9 +220,9 @@ private static class Entry<K,V> extends HashMap.Entry<K,V> {
         LinkedHashMap<K,V> lm = (LinkedHashMap<K,V>)m;
         if (lm.accessOrder) {
             lm.modCount++;
-          	//删除该节点
+            //删除该节点
             remove();
-          	//把该节点添加至header前面
+            //把该节点添加至header前面
             addBefore(lm.header);
         }
     }
@@ -316,7 +316,7 @@ public V get(Object key) {
     Entry<K,V> e = (Entry<K,V>)getEntry(key);
     if (e == null)
         return null;
-  	//如果LinkedHashMap中节点按访问顺序排序，则把找到的节点移动到头节点前面
+    //如果LinkedHashMap中节点按访问顺序排序，则把找到的节点移动到头节点前面
     e.recordAccess(this);
     return e.value;
 }
@@ -334,10 +334,10 @@ public V put(K key, V value) {
     }
     if (key == null)
         return putForNullKey(value);
-  	//计算key对应的哈希值以及对应的index值
+    //计算key对应的哈希值以及对应的index值
     int hash = hash(key);
     int i = indexFor(hash, table.length);
-  	//遍历index值对应的链表，如果key相等，则更新key对应的value值
+    //遍历index值对应的链表，如果key相等，则更新key对应的value值
     for (Entry<K,V> e = table[i]; e != null; e = e.next) {
         Object k;
         if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
@@ -347,7 +347,7 @@ public V put(K key, V value) {
             return oldValue;
         }
     }
-	//如果没有找到对应的key，则添加新节点
+    //如果没有找到对应的key，则添加新节点
     modCount++;
     addEntry(hash, key, value, i);
     return null;
@@ -381,11 +381,11 @@ void createEntry(int hash, K key, V value, int bucketIndex) {
  * 重写addEntry方法
  */
 void addEntry(int hash, K key, V value, int bucketIndex) {
-  	//调用HashMap的addEntry方法
+    //调用HashMap的addEntry方法
     super.addEntry(hash, key, value, bucketIndex);
-
-    // Remove eldest entry if instructed
-  	//如果有需要，删除最后的节点(header的after指针所指向的节点是最老的节点)
+    
+    //Remove eldest entry if instructed
+    //如果有需要，删除最后的节点(header的after指针所指向的节点是最老的节点)
     Entry<K,V> eldest = header.after;
     if (removeEldestEntry(eldest)) {
         removeEntryForKey(eldest.key);
@@ -402,7 +402,7 @@ void createEntry(int hash, K key, V value, int bucketIndex) {
     HashMap.Entry<K,V> old = table[bucketIndex];
     Entry<K,V> e = new Entry<>(hash, key, value, old);
     table[bucketIndex] = e;
-  	//新节点e添加到头节点前面
+    //新节点e添加到头节点前面
     e.addBefore(header);
     size++;
 }
