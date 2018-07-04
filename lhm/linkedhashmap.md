@@ -31,20 +31,18 @@ public void testHashMap() {
 ```java
 public class LinkedHashMap<K,V> extends HashMap<K,V. implements Map<K,V>
 {
-	/**
-	 * The head of the doubly linked list.
-	 */
-	private transient Entry<K,V> header;
-	
-	...
-	/**
-	 * LinkedHashMap entry.
- 	 */
-	private static class Entry<K,V> extends HashMap.Entry<K,V> {
-    // These fields comprise the doubly linked list used for iteration.
-		Entry<K,V> before, after;
-		...
-	}
+    /**
+     * The head of the doubly linked list.
+     */
+    private transient Entry<K,V> header;
+    
+    /**
+     * LinkedHashMap entry.
+     */
+    private static class Entry<K,V> extends HashMap.Entry<K,V> { 
+        // These fields comprise the doubly linked list used for iteration.
+        Entry<K,V> before, after;
+    }
 }
 ```
 
@@ -70,7 +68,7 @@ public class LinkedHashMap<K,V> extends HashMap<K,V. implements Map<K,V>
  * 根据传入的初始capacity和load factor两个参数构造一个空的按插入顺序排序的LinkedHashMap实例
  */
 public LinkedHashMap(int initialCapacity, float loadFactor) {
-	super(initialCapacity, loadFactor);
+    super(initialCapacity, loadFactor);
     accessOrder = false;
 }
 
@@ -78,24 +76,24 @@ public LinkedHashMap(int initialCapacity, float loadFactor) {
  * 根据传入的初始capacity参数（load factor默认值0.75）构造一个空的按插入顺序排序的LinkedHashMap实例
  */
 public LinkedHashMap(int initialCapacity) {
-	super(initialCapacity);
-  	accessOrder = false;
+    super(initialCapacity);
+    accessOrder = false;
 }
 
 /**
  * 无参数构造函数（初始capacity默认值16，load factor默认值0.75）构造一个空的按插入顺序排序的LinkedHashMap实例
  */
 public LinkedHashMap() {
-  	super();
-  	accessOrder = false;
+    super();
+    accessOrder = false;
 }
 
 /**
  * 根据传入的Map对象构造一个有值的按插入顺序排序的LinkedHashMap，其中load factor默认值0.75
  */
 public LinkedHashMap(Map<? extends K, ? extends V> m) {
-  	super(m);
-  	accessOrder = false;
+    super(m);
+    accessOrder = false;
 }
 
 /**
@@ -104,8 +102,8 @@ public LinkedHashMap(Map<? extends K, ? extends V> m) {
 public LinkedHashMap(int initialCapacity,
                      float loadFactor,
                      boolean accessOrder) {
-	super(initialCapacity, loadFactor);
-  	this.accessOrder = accessOrder;
+    super(initialCapacity, loadFactor);
+    this.accessOrder = accessOrder;
 }
 ```
 
@@ -129,10 +127,10 @@ public void testLinkedHashMapWithInsertionOrder() {
     System.out.println(lm);
     lm.put("b", 5); //更新元素b对应的值
     System.out.println(lm);
-  	//测试结果打印：
-  	//{a=1, b=2, c=3, d=4}
-  	//{a=1, b=2, c=3, d=4}
-  	//{a=1, b=5, c=3, d=4}
+    //测试结果打印：
+    //{a=1, b=2, c=3, d=4}
+    //{a=1, b=2, c=3, d=4}
+    //{a=1, b=5, c=3, d=4}
 }
 /**
  * 测试LinkedHashMap内部元素按访问顺序排序
@@ -187,11 +185,11 @@ LinkedHashMap的Entry类：
 private static class Entry<K,V> extends HashMap.Entry<K,V> {
     // These fields comprise the doubly linked list used for iteration.
     Entry<K,V> before, after;
-
+    
     Entry(int hash, K key, V value, HashMap.Entry<K,V> next) {
         super(hash, key, value, next);
     }
-
+    
     /**
      * Removes this entry from the linked list.
      */
@@ -199,7 +197,7 @@ private static class Entry<K,V> extends HashMap.Entry<K,V> {
         before.after = after;
         after.before = before;
     }
-
+    
     /**
      * Inserts this entry before the specified existing entry in the list.
      */
@@ -209,7 +207,7 @@ private static class Entry<K,V> extends HashMap.Entry<K,V> {
         before.after = this;
         after.before = this;
     }
-
+    
     /**
      * This method is invoked by the superclass whenever the value
      * of a pre-existing entry is read by Map.get or modified by Map.set.
@@ -226,7 +224,7 @@ private static class Entry<K,V> extends HashMap.Entry<K,V> {
             addBefore(lm.header);
         }
     }
-
+    
     void recordRemoval(HashMap<K,V> m) {
         remove();
     }
@@ -250,7 +248,7 @@ public class HashMap<K,V>
     extends AbstractMap<K,V>
     implements Map<K,V>, Cloneable, Serializable
 {
-	/**
+    /**
      * Constructs an empty <tt>HashMap</tt> with the specified initial
      * capacity and load factor.
      *
@@ -268,13 +266,13 @@ public class HashMap<K,V>
         if (loadFactor <= 0 || Float.isNaN(loadFactor))
             throw new IllegalArgumentException("Illegal load factor: " +
                                                loadFactor);
-
+    
         this.loadFactor = loadFactor;
         threshold = initialCapacity;
         init();
     }
-  
-  	/**
+    
+    /**
      * Initialization hook for subclasses. This method is called
      * in all constructors and pseudo-constructors (clone, readObject)
      * after HashMap has been initialized but before any entries have
@@ -359,14 +357,14 @@ void addEntry(int hash, K key, V value, int bucketIndex) {
         hash = (null != key) ? hash(key) : 0;
         bucketIndex = indexFor(hash, table.length);
     }
-
+    
     createEntry(hash, key, value, bucketIndex);
 }
 
 void createEntry(int hash, K key, V value, int bucketIndex) {
     Entry<K,V> e = table[bucketIndex];
-  	table[bucketIndex] = new Entry<>(hash, key, value, e);
-  	size++;
+    table[bucketIndex] = new Entry<>(hash, key, value, e);
+    size++;
 }
 ```
 
