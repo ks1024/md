@@ -189,6 +189,6 @@ public void void testLRUCache {
 
 ![](./img/lru_addnew.png)
 
-## 其他思路
+## 其他实现方法
 
-除了以上实现方法外，还可以参看[LinkedHashMap源码分析](https://github.com/yankuangshi/md/tree/master/lhm)，可通过扩展LinkedHashMap来实现LRU缓存。
+除了以上实现方法外，还可以参看[LinkedHashMap源码分析](https://github.com/yankuangshi/md/tree/master/lhm)，通过扩展LinkedHashMap来实现LRU缓存。

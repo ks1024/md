@@ -514,3 +514,8 @@ public class LRUCache<K, V> {
 ## 0x04 总结
 
 通过以上的源码分析，我们可以看出LinkedHashMap只是对HashMap进行了扩展，由双链表的插入操作时间复杂度O(1)可知，LinkedHashMap在时间开销上并不会比HashMap多太多。因此当需要一个内部元素有序的Map时，不妨选择使用LinkedHashMap，但是需要注意，同HashMap一样，LinkedHashMap并不支持并发。
+
+
+
+> 参考：[JDK LinkedHashMap源码](https://docs.oracle.com/javase/7/docs/api/java/util/LinkedHashMap.html)
+
