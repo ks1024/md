@@ -2,6 +2,8 @@
 
 > 本文源码分析基于Oracle JDK 1.7.0_80
 
+[TOC]
+
 ## 0x00 从HashMap说起
 HashMap是一种基于哈希表（hash table）实现的map，其原理是：key经过哈希函数映射后得到一个槽（buckets）的索引（index），槽中保存着我们想要获取的值。
 
