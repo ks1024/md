@@ -25,11 +25,6 @@ LRU（Least Recently Used）翻译过来就是“最近最少使用”，是缓�
 以下为代码：
 
 ```java
-package com.democode4j.loj.learning;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class LRUMap<K, V> {
 
     private class Node<K, V> {
@@ -160,9 +155,9 @@ public class LRUMap<K, V> {
 ```java
 @Test
 public void void testLRUCache {
-  	LRUMap<String, Integer> lruMap = new LRUMap<>(3);
-  	lruMap.put("a", 1);
-  	lruMap.put("b", 2);
+    LRUMap<String, Integer> lruMap = new LRUMap<>(3);
+    lruMap.put("a", 1);
+    lruMap.put("b", 2);
     lruMap.put("c", 3);
     System.out.println(lruMap); //LRUMap{(head)->(c:3)->(b:2)->(a:1)->(tail)}
     lruMap.get("a");
@@ -182,15 +177,15 @@ public void void testLRUCache {
 
 ![添加节点](./img/lru_put.png)
 
-访问a节点：
+访问a节点，缓存命中，移动a节点至头部：
 
 ![访问a节点](./img/lru_get.png)
 
-更新节点b（更新b节点value值已经移动到链表头部）：
+更新节点b，缓存命中，更新b节点value值然后移动到链表头部：
 
 ![更新节点b](./img/lru_update.png)
 
-最后一步添加新元素`("d",5)`：
+更新节点d，缓存不存在，添加新元素至HashMap表，清除最老数据节点（缓存已满）然后将新节点添加到头部：
 
 ![](./img/lru_addnew.png)
 
